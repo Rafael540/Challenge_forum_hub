@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/topicos")
 public class TopicoController {
@@ -61,8 +59,8 @@ public class TopicoController {
 
     @PutMapping("/topicos/{id}")
     @Transactional
-    public ResponseEntity<Topico> atualizar(@PathVariable Long id,
-                                            @RequestBody @Valid AtualizacaoTopico dados){
+    public ResponseEntity<DetalhamentoTopico> atualizar(@PathVariable Long id,
+                                                        @RequestBody @Valid AtualizacaoTopico dados){
 
         var optionalTopico = repository.findById(id);
 
@@ -76,18 +74,19 @@ public class TopicoController {
         return ResponseEntity.ok(new DetalhamentoTopico(topico));
     }
 
+
     @DeleteMapping("/topicos/{id}")
     @Transactional
     public ResponseEntity<Topico> deletar(@PathVariable Long id,
-                                          @RequestBody @Valid TopicosListados dados) {
+                                          @RequestBody @Valid TopicosListados dados){
         var topico = repository.findById(id);
 
-        if (topico.isEmpty()) {
+        if(topico.isEmpty()){
             return ResponseEntity.notFound().build();
         }
 
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
+        }
 
 }
